@@ -1,5 +1,7 @@
 import type Rpio from "rpio";
 
+type PixelFormat = "rgba" | "bgra";
+
 export class ILI9341_LCD {
   private readonly rpio: Rpio;
   public readonly width: number;
@@ -142,14 +144,21 @@ export class ILI9341_LCD {
     this.spiWrite(data);
   }
 
-  public rgb888ToRgb565(buffer: Buffer, bytesPerPixel = 3) {
+  rgb888ToRgb565(
+    buffer: Buffer,
+    {
+      bytesPerPixel = 3,
+      pixelFormat = "rgba",
+    }: {
+      bytesPerPixel?: number;
+      pixelFormat?: PixelFormat;
+    } = {}
+  ) {
     const newBufferSize = (buffer.length * 2) / bytesPerPixel;
     const newBuffer = Buffer.allocUnsafe(newBufferSize);
     let i = 0;
     for (let j = 0; j < buffer.length; j += bytesPerPixel) {
-      let r = buffer[j];
-      let g = buffer[j + 1];
-      let b = buffer[j + 2];
+      let { r, g, b } = this.getRgb(buffer, j, pixelFormat);
 
       r = (r * 249 + 1014) >> 11;
       g = (g * 253 + 505) >> 10;
@@ -165,17 +174,42 @@ export class ILI9341_LCD {
     return newBuffer;
   }
 
-  showImage(image: { width: number; height: number; data: Buffer }) {
-    const [imwidth, imheight] = [image.width, image.height];
-    if (imwidth !== this.width && imheight !== this.height) {
+  private getRgb(buffer: Buffer, startIndex: number, pixelFormat: PixelFormat) {
+    if (pixelFormat === "bgra") {
+      let r = buffer[startIndex + 2];
+      let g = buffer[startIndex + 1];
+      let b = buffer[startIndex];
+      return { r, g, b };
+    }
+    let r = buffer[startIndex];
+    let g = buffer[startIndex + 1];
+    let b = buffer[startIndex + 2];
+    return { r, g, b };
+  }
+
+  showImage({
+    width,
+    height,
+    data,
+    pixelFormat = "rgba",
+  }: {
+    width: number;
+    height: number;
+    data: Buffer;
+    pixelFormat?: PixelFormat;
+  }) {
+    if (width !== this.width && height !== this.height) {
       throw new Error(
-        `Image dimensions {${imwidth},${imheight}} do not match display dimensions {${this.width},${this.height}}`
+        `Image dimensions {${width},${height}} do not match display dimensions {${this.width},${this.height}}`
       );
     }
-    const bytesPerPixel = image.data.length / imwidth / imheight;
     this.command(0x36);
     this.data(0x08);
-    const pix = this.rgb888ToRgb565(image.data, bytesPerPixel);
+    const bytesPerPixel = data.length / width / height;
+    const pix = this.rgb888ToRgb565(data, {
+      bytesPerPixel,
+      pixelFormat,
+    });
     this.setCanvas(pix);
   }
 

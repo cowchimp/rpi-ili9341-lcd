@@ -33,7 +33,29 @@ describe("rgb888ToRgb565", () => {
     );
     const expected = Buffer.alloc(16, Buffer.from([0xf8, 0x00]));
 
-    const result = disp.rgb888ToRgb565(image, 4);
+    const result = disp.rgb888ToRgb565(image, {
+      bytesPerPixel: 4,
+    });
+
+    expect(result).toEqual(expected);
+  });
+
+  it("converts BGR array correctly", () => {
+    const rpio = getMockRpio();
+    const disp = new ILI9341_LCD((rpio as unknown) as Rpio, {
+      width: 1,
+      height: 1,
+    });
+    const singleBit = [0x71, 0xb3, 0x3c];
+    const image = Buffer.alloc(
+      disp.width * disp.height * singleBit.length,
+      Buffer.from(singleBit)
+    );
+    const expected = Buffer.alloc(2, Buffer.from([0x3d, 0x8e]));
+
+    const result = disp.rgb888ToRgb565(image, {
+      pixelFormat: "bgra",
+    });
 
     expect(result).toEqual(expected);
   });
