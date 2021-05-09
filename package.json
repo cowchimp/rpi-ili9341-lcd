@@ -1,0 +1,36 @@
+{
+  "name": "rpi-ili9341-lcd",
+  "version": "0.0.1",
+  "description": "A Raspberry Pi display driver for LCDs running the ILI9341 chip",
+  "main": "src/ILI9341_LCD.js",
+  "files": [
+    "src/**/!(*.spec).js"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/rpio": "^2.0.0",
+    "jest": "^26.6.3",
+    "pngjs": "^6.0.0",
+    "rpio": "^1.0.0"
+  },
+  "peerDependencies": {
+    "rpio": "1.x"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [
+    "waveshare",
+    "lcd",
+    "rpio",
+    "ili9341"
+  ],
+  "author": "cowchimp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cowchimp/rpi-ili9341-lcd.git"
+  },
+  "license": "MIT"
+}
