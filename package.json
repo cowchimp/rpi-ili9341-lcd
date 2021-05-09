@@ -1,6 +1,6 @@
 {
   "name": "rpi-ili9341-lcd",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Raspberry Pi display driver for LCDs running the ILI9341 chip",
   "main": "dist/ILI9341_LCD.js",
   "types": "dist/index.d.ts",
