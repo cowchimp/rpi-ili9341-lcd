@@ -1,5 +1,5 @@
 const rpio = require("rpio");
-const { ILI9341_LCD } = require("../../src/ILI9341_LCD"); // use require('rpi-ili9341-lcd') in your code
+const { ILI9341_LCD } = require("../../dist/ILI9341_LCD"); // use require('rpi-ili9341-lcd') in your code
 const fs = require("fs");
 const { PNG } = require("pngjs");
 

@@ -1,6 +1,14 @@
-exports.ILI9341_LCD = class ILI9341_LCD {
+import type Rpio from "rpio";
+
+export class ILI9341_LCD {
+  private readonly rpio: Rpio;
+  public readonly width: number;
+  public readonly height: number;
+  public readonly rstPin: number;
+  public readonly dcPin: number;
+
   constructor(
-    rpio,
+    rpio: Rpio,
     { width = 240, height = 340, rstPin = 27, dcPin = 25 } = {}
   ) {
     this.rpio = rpio;
@@ -10,7 +18,7 @@ exports.ILI9341_LCD = class ILI9341_LCD {
     this.dcPin = dcPin;
   }
 
-  moduleInit() {
+  private moduleInit() {
     this.rpio.open(this.rstPin, this.rpio.OUTPUT);
     this.rpio.open(this.dcPin, this.rpio.OUTPUT);
     this.rpio.spiBegin();
@@ -23,7 +31,7 @@ exports.ILI9341_LCD = class ILI9341_LCD {
     this.rpio.write(this.dcPin, this.rpio.LOW);
   }
 
-  reset() {
+  private reset() {
     this.rpio.write(this.rstPin, this.rpio.HIGH);
     this.rpio.sleep(0.01);
     this.rpio.write(this.rstPin, this.rpio.LOW);
@@ -124,17 +132,17 @@ exports.ILI9341_LCD = class ILI9341_LCD {
     this.command(0x29); // '''Display on'''
   }
 
-  command(data) {
+  private command(data: number) {
     this.rpio.write(this.dcPin, this.rpio.LOW);
     this.spiWrite(data);
   }
 
-  data(data) {
+  private data(data: number) {
     this.rpio.write(this.dcPin, this.rpio.HIGH);
     this.spiWrite(data);
   }
 
-  rgb888ToRgb565(buffer, bytesPerPixel = 3) {
+  public rgb888ToRgb565(buffer: Buffer, bytesPerPixel = 3) {
     const newBufferSize = (buffer.length * 2) / bytesPerPixel;
     const newBuffer = Buffer.allocUnsafe(newBufferSize);
     let i = 0;
@@ -157,7 +165,7 @@ exports.ILI9341_LCD = class ILI9341_LCD {
     return newBuffer;
   }
 
-  showImage(image) {
+  showImage(image: { width: number; height: number; data: Buffer }) {
     const [imwidth, imheight] = [image.width, image.height];
     if (imwidth !== this.width && imheight !== this.height) {
       throw new Error(
@@ -171,7 +179,7 @@ exports.ILI9341_LCD = class ILI9341_LCD {
     this.setCanvas(pix);
   }
 
-  spiWrite(data) {
+  private spiWrite(data: number) {
     const txbuf = Buffer.from([data]);
     this.rpio.spiWrite(txbuf, txbuf.length);
   }
@@ -181,7 +189,7 @@ exports.ILI9341_LCD = class ILI9341_LCD {
     this.setCanvas(buffer);
   }
 
-  setCanvas(buffer) {
+  private setCanvas(buffer: Buffer) {
     this.setWindows(0, 0, this.width, this.height);
     this.rpio.write(this.dcPin, this.rpio.HIGH);
     for (let i = 0; i < buffer.length; i += 4096) {
@@ -190,7 +198,12 @@ exports.ILI9341_LCD = class ILI9341_LCD {
     }
   }
 
-  setWindows(Xstart, Ystart, Xend, Yend) {
+  private setWindows(
+    Xstart: number,
+    Ystart: number,
+    Xend: number,
+    Yend: number
+  ) {
     //set the X coordinates
     this.command(0x2a);
     this.data(Xstart >> 8);
@@ -207,4 +220,4 @@ exports.ILI9341_LCD = class ILI9341_LCD {
 
     this.command(0x2c);
   }
-};
+}

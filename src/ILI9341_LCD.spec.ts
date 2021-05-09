@@ -1,9 +1,13 @@
-const { ILI9341_LCD } = require("./ILI9341_LCD");
+import type Rpio from "rpio";
+import { ILI9341_LCD } from "./ILI9341_LCD";
 
 describe("rgb888ToRgb565", () => {
   it("converts RGB array correctly", () => {
     const rpio = getMockRpio();
-    const disp = new ILI9341_LCD(rpio, { width: 2, height: 4 });
+    const disp = new ILI9341_LCD((rpio as unknown) as Rpio, {
+      width: 2,
+      height: 4,
+    });
     const singleBit = [0xff, 0x00, 0x00];
     const image = Buffer.alloc(
       disp.width * disp.height * singleBit.length,
@@ -18,7 +22,10 @@ describe("rgb888ToRgb565", () => {
 
   it("converts RGBA array correctly", () => {
     const rpio = getMockRpio();
-    const disp = new ILI9341_LCD(rpio, { width: 2, height: 4 });
+    const disp = new ILI9341_LCD((rpio as unknown) as Rpio, {
+      width: 2,
+      height: 4,
+    });
     const singleBit = [0xff, 0x00, 0x00, 0xff];
     const image = Buffer.alloc(
       disp.width * disp.height * singleBit.length,
@@ -35,7 +42,10 @@ describe("rgb888ToRgb565", () => {
 describe("showImage", () => {
   it("sets SPI data correctly", () => {
     const rpio = getMockRpio();
-    const disp = new ILI9341_LCD(rpio, { width: 2, height: 4 });
+    const disp = new ILI9341_LCD((rpio as unknown) as Rpio, {
+      width: 2,
+      height: 4,
+    });
 
     disp.Init();
     disp.showImage({
@@ -51,7 +61,10 @@ describe("showImage", () => {
 
   it("throws if provided image dimensions does not match display dimensions", () => {
     const rpio = getMockRpio();
-    const disp = new ILI9341_LCD(rpio, { width: 2, height: 4 });
+    const disp = new ILI9341_LCD((rpio as unknown) as Rpio, {
+      width: 2,
+      height: 4,
+    });
 
     disp.Init();
     expect(() =>
