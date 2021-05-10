@@ -11,7 +11,7 @@ export class ILI9341_LCD {
 
   constructor(
     rpio: Rpio,
-    { width = 240, height = 340, rstPin = 27, dcPin = 25 } = {}
+    { width = 240, height = 320, rstPin = 27, dcPin = 25 } = {}
   ) {
     this.rpio = rpio;
     this.width = width;
