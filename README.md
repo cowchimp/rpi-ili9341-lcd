@@ -4,7 +4,7 @@ A Raspberry Pi display driver for LCDs running the ILI9341 chip, like the [Waves
 
 ## Installation
 
-⚠️ This package was designed to be used with the [rpio](https://github.com/jperkin/node-rpio) library.  
+⚠️ This package was designed to be used with the [rpio](https://github.com/jperkin/node-rpio) library for Node.js.  
 Please make sure that you have [rpio](https://www.npmjs.com/package/rpio) installed and set-up according to its [system requirements](https://www.npmjs.com/package/rpio#important-system-requirements).
 
 ```bash 
