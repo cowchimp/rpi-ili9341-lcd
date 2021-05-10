@@ -42,6 +42,7 @@ disp.moduleExit();
 * [Fill the screen with a single color](examples/basic/index.js)
 * [Using `pngjs` to display an image from a .png file](examples/pngjs/index.js) 
 * [Using `node-canvas` to draw different elements](examples/node-canvas/index.js)
+* [Using `sharp` to resize and rotate a .jpg file before displaying it](examples/sharp/index.js)
 
 ## FAQ
 
