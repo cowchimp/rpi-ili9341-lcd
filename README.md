@@ -1,3 +1,5 @@
+[![npm](https://img.shields.io/npm/v/rpi-ili9341-lcd.svg)](https://www.npmjs.com/package/rpi-ili9341-lcd)
+
 # rpi-ili9341-lcd
 
 A Raspberry Pi display driver for LCDs running the ILI9341 chip, like the [Waveshare 2.4inch LCD Module](https://www.waveshare.com/wiki/2.4inch_LCD_Module).
