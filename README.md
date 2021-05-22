@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/rpi-ili9341-lcd.svg)](https://www.npmjs.com/package/rpi-ili9341-lcd)
+[![npm](https://img.shields.io/npm/v/rpi-ili9341-lcd.svg?logo=npm)](https://www.npmjs.com/package/rpi-ili9341-lcd)
 
 # rpi-ili9341-lcd
 
